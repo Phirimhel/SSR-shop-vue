@@ -1,7 +1,7 @@
 import * as cartApi from '@/apis/cart';
-import type { Product } from '@/types/index';
+import type { Product } from '@/types/shopTypes';
 import { defineStore } from 'pinia';
-import { computed, onMounted } from 'vue';
+import { onMounted } from 'vue';
 
 import { useProductCollection } from './composables/useProductCollection';
 

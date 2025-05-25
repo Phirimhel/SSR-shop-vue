@@ -8,14 +8,7 @@
    </div>
 </template>
 
-<script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { fetchAllProducts } from '@/apis/products';
-import type { Product } from '@/types/shopTypes';
-
-const route = useRoute();
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .products-page {

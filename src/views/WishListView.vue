@@ -1,14 +1,12 @@
 <template>
-   <Wishlist :products="products" />
+   <Wishlist :products="wishlistStore.wishlist" />
 </template>
 
 <script setup lang="ts">
 import Wishlist from '@/components/wishlist/Wishlist.vue';
-import type { Product } from '@/types/shopTypes';
+import { useWishlistStore } from '@/stores/useWishlistStore';
 
-defineProps<{
-   products: Product[];
-}>();
+const wishlistStore = useWishlistStore();
 </script>
 
 <style scoped>

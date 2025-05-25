@@ -1,4 +1,4 @@
-import type { Product } from '@/types/index';
+import type { Product } from '@/types/shopTypes';
 
 export function updateProductQuantity(array: Product[], product: Product, currentQuantity: number) {
    const index = array.findIndex((p) => p.id === product.id);

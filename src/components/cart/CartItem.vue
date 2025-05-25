@@ -1,5 +1,5 @@
 <template>
-   <!-- <div class="cart-item">
+   <div class="cart-item">
       <div class="item-image">
          <img :src="product.image" :alt="product.title" />
       </div>
@@ -7,24 +7,30 @@
          <h3 class="item-title">{{ product.title }}</h3>
          <p class="item-price">
             ${{ product.price }}
-            <span class="item-quantity">Quantity: {{ controls?.quantityInCart }} </span>
-            <span class="item-quantity"> ${{ product.price * controls?.quantityInCart }}</span>
+            <span class="item-quantity">Quantity: {{ product.quantity }} </span>
+            <span class="item-quantity"> ${{ product.price * product.quantity }}</span>
          </p>
       </div>
-      <button class="remove-button" @click="removeProductFromCart">
+      <button class="remove-button" @click="removeProductFromCart(product)">
          <span class="remove-icon">✕</span>
       </button>
-   </div> -->
+   </div>
 </template>
 
 <script setup lang="ts">
 import type { Product } from '@/types/shopTypes';
+import { useCartStore } from '@/stores/useCartStore';
 
-const props = defineProps<{
+const cartStore = useCartStore();
+
+defineProps<{
    product: Product;
 }>();
 
-const removeProductFromCart = async () => {};
+const removeProductFromCart = async (product: Product) => {
+   console.log('🟪 | action: removeProductFromCart');
+   cartStore.remove(product, product.quantity);
+};
 </script>
 
 <style scoped>

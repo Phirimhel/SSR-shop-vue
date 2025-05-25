@@ -1,14 +1,11 @@
 <template>
-   <Cart :products="products" />
+   <Cart :products="cartStore.cart" />
 </template>
 
 <script setup lang="ts">
 import Cart from '@/components/cart/Cart.vue';
-import type { Product } from '@/types/shopTypes';
-
-defineProps<{
-   products: Product[];
-}>();
+import { useCartStore } from '@/stores/useCartStore';
+const cartStore = useCartStore();
 </script>
 
 <style scoped>

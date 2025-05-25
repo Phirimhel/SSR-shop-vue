@@ -24,8 +24,11 @@
                <button class="quantity-btn" @click="increaseQuantity()" :disabled="false">+</button>
             </div>
          </transition>
-         <button class="wishlist-button" @click="">
-            <span class="wishlist-icon" v-if="false"> ✔️ </span>
+         <button
+            class="wishlist-button"
+            @click="!inWishlist ? addProductToWishlist() : removeProductFromWishlist()"
+         >
+            <span class="wishlist-icon" v-if="inWishlist"> ✔️ </span>
             <span class="wishlist-icon" v-else> 🤍 </span>
          </button>
       </div>
@@ -55,46 +58,19 @@
 
 <script setup lang="ts">
 import { useCartStore } from '@/stores/useCartStore';
+import { useWishlistStore } from '@/stores/useWishlistStore';
 import type { Product } from '@/types/shopTypes';
-import { watch } from 'vue';
+
+const cartStore = useCartStore();
+const wishlistStore = useWishlistStore();
 
 const { product, inCart, quantityInCart, productsLeft } = defineProps<{
    product: Product;
    inCart: boolean;
    quantityInCart: number;
    productsLeft: number;
+   inWishlist: boolean;
 }>();
-
-const cartStore = useCartStore();
-
-watch(
-   () => product,
-   (newProduct) => {
-      console.log('🧿| Product changed:', newProduct);
-   },
-   { deep: true }
-);
-
-watch(
-   () => inCart,
-   (newInCart) => {
-      console.log('🧿| Cart status changed:', newInCart);
-   }
-);
-
-watch(
-   () => quantityInCart,
-   (newQuantity) => {
-      console.log('🧿| Quantity in cart changed:', newQuantity);
-   }
-);
-
-watch(
-   () => productsLeft,
-   (newProductsLeft) => {
-      console.log('🧿 | Products left changed:', newProductsLeft);
-   }
-);
 
 const addProductToCart = () => {
    console.log('🟪 | action: addProductToCart');
@@ -114,6 +90,16 @@ const increaseQuantity = async () => {
 const decreaseQuantity = async () => {
    console.log('🟪 | action: decreaseQuantity');
    cartStore.remove(product, 1);
+};
+
+const addProductToWishlist = async () => {
+   console.log('🟪 | action: addProductToWishlist');
+   wishlistStore.add(product);
+};
+
+const removeProductFromWishlist = async () => {
+   console.log('🟪 | action: removeProductFromWishlist');
+   wishlistStore.remove(product);
 };
 </script>
 

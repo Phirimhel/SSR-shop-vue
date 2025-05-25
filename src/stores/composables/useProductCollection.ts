@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import type { Product } from '@/types/index';
+import type { Product } from '@/types/shopTypes';
 
 export function useProductCollection(initial: Product[] = []) {
    const collectionMap = ref(new Map<number, Product>(initial.map((p) => [p.id, p])));

@@ -1,18 +1,15 @@
 <template>
-   <!-- <div class="cart-container">
+   <div class="cart-container">
       <div class="cart-header">
          <h1 class="cart-title">Shopping Cart</h1>
-         <p class="cart-subtitle">{{ totalProductsInCart }} items</p>
+         <p class="cart-subtitle">{{ products.length }} items</p>
       </div>
 
       <div class="cart-content" v-if="products.length > 0">
          <div class="cart-items">
-            <CartItem
-               v-for="product in props.products"
-               :key="product.id"
-               :product="product"
-               :controls="controls.get(product.id)!"
-            />
+            <transition-group name="cart-item">
+               <CartItem v-for="product in products" :key="product.id" :product="product" />
+            </transition-group>
          </div>
          <div class="cart-summary">
             <div class="summary-row">
@@ -27,7 +24,7 @@
                <span>Total</span>
                <span>${{ totalPrice }}</span>
             </div>
-            <button class="checkout-button" @click="goToCheckout">
+            <button class="checkout-button" @click="router.push('/checkout')">
                <span class="checkout-icon">→</span>
                <span>Proceed to Checkout</span>
             </button>
@@ -40,15 +37,24 @@
          <p>Add some products to your cart to see them here</p>
          <router-link to="/" class="continue-shopping"> Continue Shopping </router-link>
       </div>
-   </div> -->
+   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import type { Product } from '../../types/shopTypes';
+import { useRouter } from 'vue-router';
+import CartItem from './CartItem.vue';
 
-defineProps<{
+const router = useRouter();
+
+const { products } = defineProps<{
    products: Product[];
 }>();
+
+const totalPrice = computed(() => {
+   return products.reduce((acc, product) => acc + product.price * product.quantity, 0).toFixed(2);
+});
 </script>
 
 <style scoped>
@@ -196,5 +202,18 @@ defineProps<{
       grid-column: 2;
       justify-self: end;
    }
+}
+
+.cart-item-enter-active {
+   transition: all 0.3s ease-out;
+}
+.cart-item-leave-active {
+   transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.cart-item-enter-from,
+.cart-item-leave-to {
+   transform: translateX(20px);
+   opacity: 0;
 }
 </style>

@@ -10,9 +10,14 @@ import { onMounted, ref } from 'vue';
 
 const products = ref<Product[]>([]);
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 onMounted(async () => {
    const data = await fetchAllProducts();
-   products.value = data;
+   for (const product of data) {
+      await delay(100);
+      products.value.push(product);
+   }
 });
 </script>
 

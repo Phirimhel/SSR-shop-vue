@@ -1,12 +1,12 @@
 <template>
-   <!-- <div class="wishlist-container">
+   <div class="wishlist-container">
       <div class="wishlist-header">
          <h1 class="wishlist-title">Wishlist</h1>
-         <p class="wishlist-subtitle">{{ totalProductsInWishlist }} items</p>
+         <p class="wishlist-subtitle">{{ wishlistIds.size }} items</p>
       </div>
-      <div class="wishlist-content" v-if="totalProductsInWishlist > 0">
+      <div class="wishlist-content" v-if="wishlistIds.size > 0">
          <div class="wishlist-items">
-            <div v-for="product in props.products" :key="product.id" class="wishlist-item">
+            <div v-for="product in products" :key="product.id" class="wishlist-item">
                <div class="item-image">
                   <img :src="product.image" :alt="product.title" />
                </div>
@@ -28,7 +28,7 @@
                </p>
                <div class="summary-stats">
                   <div class="stat-item">
-                     <span class="stat-value">{{ totalProductsInWishlist }}</span>
+                     <span class="stat-value">{{ wishlistIds.size }}</span>
                      <span class="stat-label">Items</span>
                   </div>
                   <div class="stat-item">
@@ -36,29 +36,47 @@
                      <span class="stat-label">Total Value</span>
                   </div>
                </div>
-               <button class="add-all-button" @click="addAllToCart(props.products)">
+               <button class="add-all-button">
                   <span class="add-all-icon">+</span>
                   <span>Add All to Cart</span>
                </button>
             </div>
          </div>
-      </div> -->
-   <!-- 
+      </div>
+
       <div class="empty-wishlist" v-else>
          <div class="empty-wishlist-icon">❤️</div>
          <h2>Your wishlist is empty</h2>
          <p>Save items you love to your wishlist</p>
          <router-link to="/" class="continue-shopping"> Continue Shopping </router-link>
       </div>
-   </div> -->
+   </div>
 </template>
 
 <script setup lang="ts">
-import type { Product } from '@/types/index';
+import { computed } from 'vue';
+import type { Product } from '../../types/shopTypes';
+import { useRouter } from 'vue-router';
+import { useWishlistStore } from '@/stores/useWishlistStore';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps<{
+const wishlistStore = useWishlistStore();
+const { wishlistIds } = storeToRefs(wishlistStore);
+
+const router = useRouter();
+
+const removeFromWishlist = async (product: Product) => {
+   console.log('🟪 | action: removeProductFromCart');
+   wishlistStore.remove(product);
+};
+
+const { products } = defineProps<{
    products: Product[];
 }>();
+
+const totalPrice = computed(() => {
+   return products.reduce((acc, product) => acc + product.price * product.quantity, 0).toFixed(2);
+});
 </script>
 
 <style scoped>
