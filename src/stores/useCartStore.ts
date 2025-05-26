@@ -22,12 +22,14 @@ export const useCartStore = defineStore('cart', () => {
 
    const add = async (product: Product, quantity: number = 1) => {
       await addLocal(product, quantity);
-      await cartApi.postProductToCart(product, quantity);
+      const { error } = await cartApi.postProductToCart(product, quantity);
+      if (error) addLocal(product, -quantity);
    };
 
    const remove = async (product: Product, quantity: number) => {
       await removeLocal(product, quantity);
-      await cartApi.removeProductFromCart(product, quantity);
+      const { error } = await cartApi.removeProductFromCart(product, quantity);
+      if (error) addLocal(product, -quantity);
    };
 
    onMounted(async () => {

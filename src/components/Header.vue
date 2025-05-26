@@ -2,17 +2,19 @@
    <header class="header">
       <div class="header-content">
          <div class="header-left">
-            <h1 class="brand">Shop</h1>
+            <h1 class="brand">{{ router.currentRoute.value.name }}</h1>
          </div>
          <div class="header-right">
             <div class="header-actions">
                <router-link to="/shop/wishlist" class="action-button">
                   <span class="action-icon">❤️</span>
-                  <span class="action-count" v-if="false">{{ 0 }}</span>
+                  <span class="action-count" v-if="wishlistIds.size > 0">{{
+                     wishlistIds.size
+                  }}</span>
                </router-link>
                <router-link to="/shop/cart" class="action-button">
                   <span class="action-icon">🛒</span>
-                  <span class="action-count" v-if="false">{{ 0 }}</span>
+                  <span class="action-count" v-if="ids.size > 0">{{ ids.size }}</span>
                </router-link>
             </div>
          </div>
@@ -20,13 +22,26 @@
    </header>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useCartStore } from '@/stores/useCartStore';
+import { useWishlistStore } from '@/stores/useWishlistStore';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const cartStore = useCartStore();
+const wishlistStore = useWishlistStore();
+
+const { ids } = storeToRefs(cartStore);
+const { wishlistIds } = storeToRefs(wishlistStore);
+</script>
 
 <style scoped>
 .header {
    background: linear-gradient(40deg, #ffffff69 0%, #ffffff 100%);
    border-bottom: 1px solid #e5e5e5;
-   padding: 1rem 2rem;
+   padding: 2rem 2rem;
    position: sticky;
    top: 0;
    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -34,7 +49,6 @@
 }
 
 .header-content {
-   max-width: 1200px;
    margin: 0 auto;
    display: flex;
    justify-content: space-between;

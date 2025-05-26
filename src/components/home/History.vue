@@ -1,7 +1,7 @@
 <template>
    <div class="cart-container">
       <div class="cart-header">
-         <h1 class="cart-title">Shopping Cart</h1>
+         <h1 class="cart-title">Order history</h1>
          <p class="cart-subtitle">{{ products.length }} items</p>
       </div>
 
@@ -10,24 +10,6 @@
             <transition-group name="cart-item">
                <CartItem v-for="product in products" :key="product.id" :product="product" />
             </transition-group>
-         </div>
-         <div class="cart-summary">
-            <div class="summary-row">
-               <span>Subtotal</span>
-               <span>${{ totalPrice }}</span>
-            </div>
-            <div class="summary-row">
-               <span>Shipping</span>
-               <span>Free</span>
-            </div>
-            <div class="summary-row total">
-               <span>Total</span>
-               <span>${{ totalPrice }}</span>
-            </div>
-            <button class="checkout-button" @click="router.push('/checkout')">
-               <span class="checkout-icon">→</span>
-               <span>Proceed to Checkout</span>
-            </button>
          </div>
       </div>
 
@@ -41,24 +23,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { Product } from '../../types/shopTypes';
-import { useRouter } from 'vue-router';
-import CartItem from './CartItem.vue';
-
-const router = useRouter();
+import CartItem from '@/components/cart/CartItem.vue';
 
 const { products } = defineProps<{
    products: Product[];
 }>();
-
-const totalPrice = computed(() => {
-   return products.reduce((acc, product) => acc + product.price * product.quantity, 0).toFixed(2);
-});
 </script>
 
 <style scoped>
 .cart-container {
+   width: 100%;
 }
 
 .cart-header {
@@ -80,7 +55,7 @@ const totalPrice = computed(() => {
 
 .cart-content {
    display: grid;
-   grid-template-columns: 2fr 1fr;
+   grid-template-columns: 1fr;
    gap: 2rem;
 }
 

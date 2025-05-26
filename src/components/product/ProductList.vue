@@ -39,7 +39,7 @@ defineProps<{
    display: grid;
    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
    justify-items: center;
-   gap: 20px;
+   gap: 1rem;
    height: 100%;
    width: 100%;
    overflow-y: auto;

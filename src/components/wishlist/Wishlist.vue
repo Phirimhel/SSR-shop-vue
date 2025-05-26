@@ -81,7 +81,6 @@ const totalPrice = computed(() => {
 
 <style scoped>
 .wishlist-header {
-   margin-bottom: 2rem;
    text-align: center;
 }
 
@@ -95,12 +94,6 @@ const totalPrice = computed(() => {
 .wishlist-subtitle {
    color: #86868b;
    margin: 0.5rem 0 0;
-}
-
-.wishlist-container {
-   max-width: 1200px;
-   margin: 2rem auto;
-   padding: 0 1rem;
 }
 
 .wishlist-header {

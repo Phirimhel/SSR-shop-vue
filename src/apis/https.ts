@@ -6,5 +6,5 @@ export const https = axios.create({
 });
 
 export function addErrorHandler(fn: any) {
-   https.interceptors.response.use((response) => response, fn);
+   https.interceptors.response.use((response) => ({ ...response, error: false }), fn);
 }

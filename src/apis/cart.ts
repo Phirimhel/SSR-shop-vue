@@ -15,7 +15,10 @@ export async function createCart() {
          quantity: QUANTITY,
       },
       {
-         vueAlertMessage: 'error of creating the cart',
+         vueAlertMessage: {
+            message: 'error of creating the cart',
+            error: true,
+         },
       }
    );
    return data;
@@ -26,14 +29,17 @@ export async function getCart(): Promise<Cart> {
       params: {
          cartId: GUEST_CART_ID,
       },
-      vueAlertMessage: 'error of loading the cart',
+      vueAlertMessage: {
+         message: 'error of loading the cart',
+         error: true,
+      },
    });
    return data;
 }
 
 export async function postProductToCart(product: Product, quantity: number) {
    //await new Promise((resolve) => setTimeout(resolve, 2000));
-   const { data } = await https.post(
+   const response = await https.post(
       '/cart/guest/add',
       {
          cartId: GUEST_CART_ID,
@@ -41,10 +47,13 @@ export async function postProductToCart(product: Product, quantity: number) {
          quantity: quantity,
       },
       {
-         vueAlertMessage: `error of adding product "${product.title}" to the cart`,
+         vueAlertMessage: {
+            message: `error of adding product "${product.title}" to the cart`,
+            error: true,
+         },
       }
    );
-   return data;
+   return response;
 }
 
 export async function removeProductFromCart(product: Product, quantity: number) {
@@ -56,7 +65,10 @@ export async function removeProductFromCart(product: Product, quantity: number) 
          quantity: quantity,
       },
       {
-         vueAlertMessage: 'Error of removing from the cart',
+         vueAlertMessage: {
+            message: 'Error of removing from the cart',
+            error: true,
+         },
       }
    );
    return data;
