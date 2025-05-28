@@ -2,21 +2,25 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import type { Alert } from '@/types/message';
 
+let id = 0;
+
 export const useAlertStore = defineStore('alert', () => {
    const alerts = ref<Alert[]>([]);
-   const showAlert = ref<boolean>(false);
 
-   function addAlert(alert: Alert) {
+   function addAlert(alert: Alert, timeout: number) {
+      alert.id = id++;
       alerts.value.push(alert);
-      showAlert.value = true;
-      setTimeout(() => {
-         showAlert.value = false;
-      }, 2000);
+
+      if (timeout) {
+         setTimeout(() => {
+            removeAlert(alert.id!);
+         }, timeout);
+      }
    }
 
-   function removeAlert(alert: Alert) {
-      alerts.value = alerts.value.filter((alert) => alert.message !== alert.message);
+   function removeAlert(id: number) {
+      alerts.value = alerts.value.filter((alert) => alert.id !== id);
    }
 
-   return { alerts, showAlert, addAlert, removeAlert };
+   return { alerts, addAlert };
 });

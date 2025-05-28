@@ -1,6 +1,7 @@
 import { https } from '@/apis/https';
 import type { Cart } from '@/types/cart';
 import type { Product } from '@/types/shopTypes';
+import type { AxiosResponse } from 'axios';
 
 const GUEST_CART_ID = 'GUEST_CART_ID';
 const PRODUCT_ID = 1;
@@ -15,25 +16,26 @@ export async function createCart() {
          quantity: QUANTITY,
       },
       {
-         vueAlertMessage: {
+         errorSuppression: {
             message: 'error of creating the cart',
-            error: true,
+            critical: false,
          },
       }
    );
    return data;
 }
 
-export async function getCart(): Promise<Cart> {
-   const { data } = await https.get('/cart/guest/load', {
+export async function getCart(): Promise<AxiosResponse<Cart>> {
+   const { data } = await https.get('/cart/guest/load1', {
       params: {
          cartId: GUEST_CART_ID,
       },
-      vueAlertMessage: {
-         message: 'error of loading the cart',
-         error: true,
+      errorSuppression: {
+         message: 'Critical error of loading the cart, pls try reload the page',
+         critical: true,
       },
    });
+
    return data;
 }
 
@@ -47,9 +49,9 @@ export async function postProductToCart(product: Product, quantity: number) {
          quantity: quantity,
       },
       {
-         vueAlertMessage: {
+         errorSuppression: {
             message: `error of adding product "${product.title}" to the cart`,
-            error: true,
+            critical: false,
          },
       }
    );
@@ -65,9 +67,9 @@ export async function removeProductFromCart(product: Product, quantity: number) 
          quantity: quantity,
       },
       {
-         vueAlertMessage: {
-            message: 'Error of removing from the cart',
-            error: true,
+         errorSuppression: {
+            message: 'error of removing from the cart',
+            critical: false,
          },
       }
    );

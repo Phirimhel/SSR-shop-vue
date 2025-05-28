@@ -28,7 +28,7 @@ const router = createRouter({
                   {
                      path: 'profile',
                      name: 'profile',
-                     component: () => import('@/components/home/profile.vue'),
+                     component: () => import('@/components/home/Profile.vue'),
                      meta: {
                         requiresAuth: true,
                      },
@@ -68,7 +68,6 @@ router.beforeEach((to, from, next) => {
    } else {
       next();
    }
-   next();
 });
 
 export default router;

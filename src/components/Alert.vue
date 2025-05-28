@@ -1,6 +1,10 @@
 <template>
-   <Transition name="alert">
-      <div v-if="alertStore.showAlert" :class="['alert', `alert-${lastAlert.type}`]">
+   <TransitionGroup name="alert">
+      <div
+         v-for="alert in alertStore.alerts"
+         :key="alert.id"
+         :class="['alert', `alert-${alert.type}`]"
+      >
          <div class="alert-icon">
             <span v-if="lastAlert.type === 'success'">✅</span>
             <span v-else-if="lastAlert.type === 'error'">❌</span>
@@ -12,7 +16,7 @@
             <div class="alert-message">{{ lastAlert.message }}</div>
          </div>
       </div>
-   </Transition>
+   </TransitionGroup>
 </template>
 
 <script setup lang="ts">
@@ -126,7 +130,7 @@ defineEmits<{
 .alert-enter-from,
 .alert-leave-to {
    opacity: 0;
-   transform: translateY(-10px);
+   transform: translateY(-30px);
 }
 
 /* Success specific styles */

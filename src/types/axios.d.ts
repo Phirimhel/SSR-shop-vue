@@ -2,16 +2,16 @@ import 'axios';
 
 declare module 'axios' {
    export interface AxiosRequestConfig {
-      error?: boolean;
-      vueAlertMessage?: {
+      errorSuppression?: {
          message: string;
-         error: boolean;
+         critical: boolean;
       };
    }
 }
 
 declare module 'axios' {
    export interface AxiosResponse {
-      error?: boolean;
+      success?: boolean;
+      data?: any;
    }
 }

@@ -30,6 +30,7 @@ export const useWishlistStore = defineStore('wishlist', () => {
    };
 
    onMounted(async () => {
+      console.log('🟨 | useWishlistStore | store | onMounted');
       await fetch();
    });
 

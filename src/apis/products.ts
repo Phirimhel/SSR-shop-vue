@@ -2,11 +2,10 @@ import { https } from '@/apis/https';
 
 export async function fetchAllProducts() {
    const { data } = await https.get('/products');
-
-   return data;
+   return data.data;
 }
 
 export async function fetchProductById(id: string) {
    const { data } = await https.get(`/products/${id}`);
-   return data;
+   return data.data;
 }

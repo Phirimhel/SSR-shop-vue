@@ -16,24 +16,26 @@ export const useCartStore = defineStore('cart', () => {
    } = useProductCollection();
 
    const fetch = async () => {
-      const response = await cartApi.getCart();
-      cartMap.value = new Map(response.products.map((p) => [p.id, p]));
+      const { data, success } = await cartApi.getCart();
+      cartMap.value = new Map(data.products.map((p: Product) => [p.id, p]));
    };
 
    const add = async (product: Product, quantity: number = 1) => {
       await addLocal(product, quantity);
-      const { error } = await cartApi.postProductToCart(product, quantity);
-      if (error) addLocal(product, -quantity);
+      const { success } = await cartApi.postProductToCart(product, quantity);
+      if (!success) addLocal(product, -quantity);
    };
 
    const remove = async (product: Product, quantity: number) => {
       await removeLocal(product, quantity);
-      const { error } = await cartApi.removeProductFromCart(product, quantity);
-      if (error) addLocal(product, -quantity);
+      const { success } = await cartApi.removeProductFromCart(product, quantity);
+      if (!success) addLocal(product, -quantity);
    };
 
    onMounted(async () => {
+      console.log('🟨 | useCartStore | store | onMounted');
       await fetch();
+      console.log('🍎 |  MOUNTED | store | fetch | data');
    });
 
    return { cart, cartMap, ids, quantities, add, remove };
